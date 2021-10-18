@@ -5,27 +5,26 @@ import { ProductsService } from "./products.service";
 @Controller('products')
 export class ProductsController {
 
-    constructor(private productsService: ProductsService){}
-    
+    constructor(private productsService: ProductsService) { }
+
     @Get()
-    getAll():Product[]{
+    async getAll(): Promise<Product[]> {
         return this.productsService.getAll();
     }
 
     @Get(':id')
-    getOne(@Param() params): Product {
+    async getOne(@Param() params): Promise<Product> {
         return this.productsService.getById(params.id);
     }
 
     @Post()
-    create(@Body() product : Product) {
-       product.id = 100;
+    async create(@Body() product: Product) {
         this.productsService.create(product);
     }
 
     @Put()
-    update(@Body() product: Product){
-        this.productsService.update(product);
+    async update(@Body() product: Product): Promise<[number, Product[]]> {
+        return this.productsService.update(product);
     }
     @Delete(':id')
     delete(@Param() params) {
